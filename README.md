@@ -1,8 +1,8 @@
-Cheesy Arena [![Build Status](https://github.com/Team254/cheesy-arena/actions/workflows/test.yml/badge.svg)](https://github.com/Team254/cheesy-arena/actions)
+GoS Arena 
 ============
-A field management system that just works.
+A field management system that just works (Cheesy Arena) that's been modified for the Steel City Showdown 2023 competition.
 
-For the game-agnostic version, see [Cheesy Arena Lite](https://github.com/Team254/cheesy-arena-lite).
+fFor the game-agnostic version, see [Cheesy Arena Lite](https://github.com/Team254/cheesy-arena-lite).
 
 ## Key features
 **For participants and spectators**
@@ -22,6 +22,12 @@ For the game-agnostic version, see [Cheesy Arena Lite](https://github.com/Team25
 * Streamlined realtime score entry
 * Reports, results, and logs can be viewed from any computer
 * An arbitrary number of auxiliary displays can be set up using any computer with just a web browser, to show rankings, queueing, field status, etc.
+
+**Cheesy Arena vs GoS Arena**
+
+* Added cargo, crates, fuel, and other items that can be scored
+* Added a panel for scoring items on the Hub Wall
+* Modifications to the driver station screens to be more responsive to smaller resolutions
 
 ## License
 Teams may use Cheesy Arena freely for practice, scrimmages, and off-season events. See [LICENSE](LICENSE) for more details.
@@ -100,3 +106,11 @@ In addition, the following individuals have contributed to make Cheesy Arena a r
 * Ken Schenke
 * Austin Schuh
 * Colin Wilson
+
+and GoS Arena's modifications:
+
+* Sarah Withee
+* Zack Zlotnik
+* Tracey Berg-Fulton
+* Teal Larson
+* 

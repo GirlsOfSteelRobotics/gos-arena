@@ -201,6 +201,16 @@ body {
   position: relative;
   padding: 30px;
 }
+.grid-score {
+  border-radius: 10px;
+  background: #fff;
+  position: relative;
+  height: 60px;
+  width: 60px;
+}
+.grid-score img {
+  width: 100%;
+}
 .modal-close {
   position: absolute;
   right: 15px;
@@ -212,4 +222,10 @@ body {
   border: 0px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.modal-trigger {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
 }

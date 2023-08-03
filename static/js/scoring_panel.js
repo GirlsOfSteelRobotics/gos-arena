@@ -141,6 +141,8 @@ const modals = document.querySelectorAll("[data-modal]");
 modals.forEach(function (trigger) {
   trigger.addEventListener("click", function (event) {
     event.preventDefault();
+    element = event.target;
+
     const modal = document.getElementById(trigger.dataset.modal);
     modal.classList.add("modal-open");
     const exits = modal.querySelectorAll(".modal-exit");
@@ -149,6 +151,14 @@ modals.forEach(function (trigger) {
         event.preventDefault();
         modal.classList.remove("modal-open");
       });
+    });
+    buttons = $(modal).find(".grid-node-button");
+    buttons.on("click", function (event) {
+      event.preventDefault();
+      toUpdate = $(element).find("img");
+      src = $(event.target).attr("src");
+      toUpdate.attr("src", src);
+      buttons.off("click");
     });
   });
 });

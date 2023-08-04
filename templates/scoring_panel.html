@@ -83,12 +83,7 @@
 </div>
 {{end}} {{define "gridNode"}}
 <div class="grid-node" data-node="{{.nodeIndex}}">
-  <div
-    id="gridAutoScoringRow{{$.rowIndex}}Node{{$.nodeIndex}}"
-    class="grid-node-auto"
-  >
-    Auto
-  </div>
+  <div class="grid-node-auto">Auto</div>
   <!-- this should be a square that shows the current node's value
         then, when clicked on, it should open the modal
         when a user clicks an object in the modal, it should trigger
@@ -98,16 +93,14 @@
     class="grid-node-states"
   >
     <div class="grid-score">
-      <a data-modal="modal-one" class="modal-trigger"
-        ><img src="/static/img/node_states/{{.state}}.svg"
-      /></a>
+      <span data-modal="modal-one" class="modal-trigger"></span>
+        {{if .state}}
+        <img src="/static/img/node_states/{{.state}}.svg" /> {{end}}
+      </span>
     </div>
     <div class="modal" id="modal-one">
       <div class="modal-bg modal-exit"></div>
-      <div
-        class="modal-container"
-        onclick="handleClick('gridAutoScoring', 0, {{$.rowIndex}}, {{$.nodeIndex}})"
-      >
+      <div class="modal-container">
         {{range $i, $state := .validStates}} {{if ne $state "Empty"}} {{template
         "gridNodeButton" dict "i" $i "state" $state "rowIndex" $.rowIndex
         "nodeIndex" $.nodeIndex}} {{end}} {{end}}
@@ -117,12 +110,7 @@
   </div>
 </div>
 {{end}} {{define "gridNodeButton"}}
-<div
-  class="grid-node-button"
-  data-node-state="{{nodeStateToInt .i}}"
-  onclick="handleClick('gridNode', 0, {{.rowIndex}}, {{.nodeIndex}}, {{nodeStateToInt .i}})"
->
-  >
+<div class="grid-node-button" data-node-state="{{nodeStateToInt .i}}">
   <img src="/static/img/node_states/{{.state}}.svg" />
 </div>
 {{end}}

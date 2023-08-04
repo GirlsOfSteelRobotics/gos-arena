@@ -139,12 +139,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0.2;
 }
 .grid-node-button[data-value="true"] {
   border: 2px solid #aaa;
   border-radius: 0.5vw;
-  opacity: 1;
+  /* opacity: 1; */
 }
 .grid-node-button img {
   width: 90%;

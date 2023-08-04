@@ -47,7 +47,6 @@ const handleRealtimeScore = function (data) {
     realtimeScore = data.Blue;
   }
   const score = realtimeScore.Score;
-  console.log(data);
   for (let i = 0; i < 3; i++) {
     const i1 = i + 1;
     $(`#mobilityStatus${i1}>.value`).text(
@@ -138,6 +137,46 @@ $(function () {
 
 const modals = document.querySelectorAll("[data-modal]");
 
+const handleButtonClick = function (event, modal, element) {
+  event.preventDefault();
+  // ... rest of the code remains the same ...
+
+  modal.classList.remove("modal-open");
+
+  const gridNodeStatesRow = $(element)
+    .closest("div[id^='gridNodeStatesRow']")
+    .attr("id");
+
+  const extractedRowAndNodeNumbers = gridNodeStatesRow.match(
+    /gridNodeStatesRow(\d+)Node(\d+)/
+  );
+
+  console.log(
+    0,
+    parseInt(extractedRowAndNodeNumbers[1], 10),
+    parseInt(extractedRowAndNodeNumbers[2], 10),
+    parseInt($(event.target).parent().attr("data-node-state"), 10)
+  );
+
+  handleClick(
+    "gridAutoScoring",
+    0,
+    parseInt(extractedRowAndNodeNumbers[1], 10),
+    parseInt(extractedRowAndNodeNumbers[2], 10),
+    parseInt($(event.target).parent().attr("data-node-state"), 10)
+  );
+  src = $(event.target).attr("src");
+
+  toUpdate = $(element).is("img") ? $(element) : $(element).find("img").first();
+
+  if (!toUpdate.length) {
+    $(element).append(`<img src=${src} />`);
+  } else {
+    toUpdate.attr("src", src);
+  }
+  modal.classList.remove("modal-open");
+};
+
 modals.forEach(function (trigger) {
   trigger.addEventListener("click", function (event) {
     event.preventDefault();
@@ -153,12 +192,10 @@ modals.forEach(function (trigger) {
       });
     });
     buttons = $(modal).find(".grid-node-button");
+    buttons.off("click"); // Unbind any previous click event handlers
     buttons.on("click", function (event) {
-      event.preventDefault();
-      toUpdate = $(element).find("img");
-      src = $(event.target).attr("src");
-      toUpdate.attr("src", src);
-      buttons.off("click");
+      // console.log($(event.currentTarget).find("img")[0]);
+      handleButtonClick(event, modal, element);
     });
   });
 });
@@ -173,24 +210,10 @@ const handleClick = function (
   gridNode = 0,
   nodeState = 0
 ) {
-  console.log(teamPosition, gridRow, gridNode, nodeState);
   websocket.send(command, {
     TeamPosition: teamPosition,
     GridRow: gridRow,
     GridNode: gridNode,
     NodeState: nodeState,
   });
-};
-
-// Handles an element click within the modal and sends the appropriate websocket message as well as closing the modal.
-const handleModalClick = function (
-  command,
-  teamPosition = 0,
-  gridRow = 0,
-  gridNode = 0,
-  nodeState = 0
-) {
-  handleClick(command, teamPosition, gridRow, gridNode, nodeState);
-  const modal = document.getElementById("modal");
-  modal.classList.remove("modal-open");
 };

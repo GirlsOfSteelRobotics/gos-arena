@@ -15,18 +15,19 @@ import (
 func TestFieldMonitorDisplay(t *testing.T) {
 	web := setupTestWeb(t)
 
-	recorder := web.getHttpResponse("/displays/field_monitor?displayId=1&fta=true&reversed=false")
+	recorder := web.getHttpResponse("/displays/field_monitor?displayId=1&ds=false&fta=true&reversed=false")
 	assert.Equal(t, 200, recorder.Code)
 	assert.Contains(t, recorder.Body.String(), "Field Monitor - Untitled Event - Cheesy Arena")
 }
 
 func TestFieldMonitorDisplayWebsocket(t *testing.T) {
 	web := setupTestWeb(t)
-	assert.Nil(t, web.arena.SubstituteTeam(254, "B1"))
+	web.arena.Database.CreateTeam(&model.Team{Id: 254})
+	assert.Nil(t, web.arena.SubstituteTeams(0, 0, 0, 254, 0, 0))
 
 	server, wsUrl := web.startTestServer()
 	defer server.Close()
-	conn, _, err := gorillawebsocket.DefaultDialer.Dial(wsUrl+"/displays/field_monitor/websocket?displayId=1&fta=false",
+	conn, _, err := gorillawebsocket.DefaultDialer.Dial(wsUrl+"/displays/field_monitor/websocket?displayId=1&ds=false&fta=false",
 		nil)
 	assert.Nil(t, err)
 	defer conn.Close()
@@ -50,11 +51,11 @@ func TestFieldMonitorDisplayWebsocket(t *testing.T) {
 func TestFieldMonitorFtaDisplayWebsocket(t *testing.T) {
 	web := setupTestWeb(t)
 	web.arena.Database.CreateTeam(&model.Team{Id: 254})
-	assert.Nil(t, web.arena.SubstituteTeam(254, "B1"))
+	assert.Nil(t, web.arena.SubstituteTeams(0, 0, 0, 254, 0, 0))
 
 	server, wsUrl := web.startTestServer()
 	defer server.Close()
-	conn, _, err := gorillawebsocket.DefaultDialer.Dial(wsUrl+"/displays/field_monitor/websocket?displayId=1&fta=true",
+	conn, _, err := gorillawebsocket.DefaultDialer.Dial(wsUrl+"/displays/field_monitor/websocket?displayId=1&ds=false&fta=true",
 		nil)
 	assert.Nil(t, err)
 	defer conn.Close()

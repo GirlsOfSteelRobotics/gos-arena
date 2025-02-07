@@ -135,8 +135,38 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 					}
 					scoreChanged = true
 				}
-			case "algae":
-				score.AlgaeCoral.AlgaeTeleopNetCount
+			case "autoAlgaeProcessorPlus":
+				score.AlgaeCoral.AlgaeAutoProcessorCount++
+				scoreChanged = true
+			case "autoAlgaeProcessorMinus":
+				if score.AlgaeCoral.AlgaeAutoProcessorCount > 0 {
+					score.AlgaeCoral.AlgaeAutoProcessorCount--
+				}
+				scoreChanged = true
+			case "teleopAlgaeProcessorPlus":
+				score.AlgaeCoral.AlgaeTeleopProcessorCount++
+				scoreChanged = true
+			case "teleopAlgaeProcessorMinus":
+				if score.AlgaeCoral.AlgaeTeleopProcessorCount > 0 {
+					score.AlgaeCoral.AlgaeTeleopProcessorCount--
+				}
+				scoreChanged = true
+			case "autoAlgaeNetPlus":
+				score.AlgaeCoral.AlgaeAutoNetCount++
+				scoreChanged = true
+			case "autoAlgaeNetMinus":
+				if score.AlgaeCoral.AlgaeAutoNetCount > 0 {
+					score.AlgaeCoral.AlgaeAutoNetCount--
+				}
+				scoreChanged = true
+			case "teleopAlgaeNetPlus":
+				score.AlgaeCoral.AlgaeTeleopNetCount++
+				scoreChanged = true
+			case "teleopAlgaeNetMinus":
+				if score.AlgaeCoral.AlgaeTeleopNetCount > 0 {
+					score.AlgaeCoral.AlgaeTeleopNetCount--
+				}
+				scoreChanged = true
 			default:
 				auto, level, down := parseCommand(command)
 				if auto {

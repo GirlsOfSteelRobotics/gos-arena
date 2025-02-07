@@ -20,6 +20,8 @@ var CoralNumLevelsThresholdWithoutCoop = 4
 var CoralNumLevelsThresholdWithCoop = 3
 var BargePointsThreshold = 14
 
+const NumCorals = 12
+
 // Represents the state of a robot at the end of the match.
 type EndgameStatus int
 

@@ -55,6 +55,14 @@ const handleRealtimeScore = function(data) {
     $("#endgameStatus" + i1 + ">.value").text(getEndgameStatusText(score.EndgameStatuses[i]));
     $("#endgameStatus" + i1).attr("data-value", score.EndgameStatuses[i]);
   }
+
+  for (let i = 0; i < 4; i++) {
+    const i1 = i + 1;
+    $("#autoCoral" + i1 +">.value").text(score.AlgaeCoral.CoralAutoCount[i]);
+    $("#autoCoral" + i1+ ">.value").attr("data-value", score.AlgaeCoral.CoralAutoCount[i]);
+    $("#teleopCoral" + i1 +">.value").text(score.AlgaeCoral.CoralTeleopCount[i]);
+    $("#teleopCoral" + i1+ ">.value").attr("data-value", score.AlgaeCoral.CoralTeleopCount[i]);
+  }
 };
 
 // Handles an element click and sends the appropriate websocket message.

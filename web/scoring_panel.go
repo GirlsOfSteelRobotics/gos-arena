@@ -10,6 +10,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/Team254/cheesy-arena/field"
 	"github.com/Team254/cheesy-arena/game"
@@ -127,15 +128,47 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 					scoreChanged = true
 				}
 			case "endgameStatus":
-				fmt.Printf("endgame score changed\n")
 				if args.TeamPosition >= 1 && args.TeamPosition <= 3 {
 					score.EndgameStatuses[args.TeamPosition-1]++
 					if score.EndgameStatuses[args.TeamPosition-1] > 3 {
-						fmt.Printf(" .... from deep to none\n")
 						score.EndgameStatuses[args.TeamPosition-1] = 0
 					}
 					scoreChanged = true
 				}
+			default:
+				auto, level, down := parseCommand(command)
+				if auto {
+					current := score.AlgaeCoral.CoralAutoCount[level]
+					if down {
+						if current > 0 {
+							score.AlgaeCoral.CoralAutoCount[level]--
+							scoreChanged = true
+						}
+					} else {
+						if current < game.NumCorals {
+							score.AlgaeCoral.CoralAutoCount[level]++
+							scoreChanged = true
+						}
+					}
+				} else {
+					current := score.AlgaeCoral.CoralTeleopCount[level]
+					if down {
+						if current > 0 {
+							score.AlgaeCoral.CoralTeleopCount[level]--
+							scoreChanged = true
+						}
+					} else {
+						if current < game.NumCorals {
+							score.AlgaeCoral.CoralTeleopCount[level]++
+							scoreChanged = true
+						}
+					}
+				}
+				// case "autoCoral1Plus":
+				// 	if score.AlgaeCoral.CoralAutoCount[0] < 12 {
+				// 		score.AlgaeCoral.CoralAutoCount[0]++
+				// 	}
+				// 	scoreChanged = true
 				// case "gridAutoScoring":
 				// 	if args.GridRow >= 0 && args.GridRow <= 2 && args.GridNode >= 0 && args.GridNode <= 8 {
 				// 		score.Grid.AutoScoring[args.GridRow][args.GridNode] =
@@ -165,4 +198,24 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 			}
 		}
 	}
+}
+
+// commands are of the format autoCoral1Minus, or teleopCoral3Plus
+func parseCommand(command string) (auto bool, level game.Level, down bool) {
+	if strings.Contains(command, "auto") {
+		auto = true
+	}
+	if strings.Contains(command, "Minus") {
+		down = true
+	}
+	if strings.Contains(command, "1") {
+		level = game.Level(0)
+	} else if strings.Contains(command, "2") {
+		level = game.Level(1)
+	} else if strings.Contains(command, "3") {
+		level = game.Level(2)
+	} else if strings.Contains(command, "4") {
+		level = game.Level(3)
+	}
+	return
 }

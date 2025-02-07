@@ -7,15 +7,16 @@ package web
 
 import (
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+
 	"github.com/Team254/cheesy-arena/field"
 	"github.com/Team254/cheesy-arena/game"
 	"github.com/Team254/cheesy-arena/model"
 	"github.com/Team254/cheesy-arena/websocket"
 	"github.com/gorilla/mux"
 	"github.com/mitchellh/mapstructure"
-	"io"
-	"log"
-	"net/http"
 )
 
 // Renders the scoring interface which enables input of scores in real-time.
@@ -120,52 +121,43 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 			}
 
 			switch command {
-			case "mobilityStatus":
+			case "leaveStatus":
 				if args.TeamPosition >= 1 && args.TeamPosition <= 3 {
-					score.MobilityStatuses[args.TeamPosition-1] = !score.MobilityStatuses[args.TeamPosition-1]
-					scoreChanged = true
-				}
-			case "autoDockStatus":
-				if args.TeamPosition >= 1 && args.TeamPosition <= 3 {
-					score.AutoDockStatuses[args.TeamPosition-1] = !score.AutoDockStatuses[args.TeamPosition-1]
+					score.LeaveStatuses[args.TeamPosition-1] = !score.LeaveStatuses[args.TeamPosition-1]
 					scoreChanged = true
 				}
 			case "endgameStatus":
+				fmt.Printf("endgame score changed\n")
 				if args.TeamPosition >= 1 && args.TeamPosition <= 3 {
 					score.EndgameStatuses[args.TeamPosition-1]++
-					if score.EndgameStatuses[args.TeamPosition-1] > 2 {
+					if score.EndgameStatuses[args.TeamPosition-1] > 3 {
+						fmt.Printf(" .... from deep to none\n")
 						score.EndgameStatuses[args.TeamPosition-1] = 0
 					}
 					scoreChanged = true
 				}
-			case "autoChargeStationLevel":
-				score.AutoChargeStationLevel = !score.AutoChargeStationLevel
-				scoreChanged = true
-			case "endgameChargeStationLevel":
-				score.EndgameChargeStationLevel = !score.EndgameChargeStationLevel
-				scoreChanged = true
-			case "gridAutoScoring":
-				if args.GridRow >= 0 && args.GridRow <= 2 && args.GridNode >= 0 && args.GridNode <= 8 {
-					score.Grid.AutoScoring[args.GridRow][args.GridNode] =
-						!score.Grid.AutoScoring[args.GridRow][args.GridNode]
-					scoreChanged = true
-				}
-			case "gridNode":
-				if args.GridRow >= 0 && args.GridRow <= 2 && args.GridNode >= 0 && args.GridNode <= 8 {
-					currentState := score.Grid.Nodes[args.GridRow][args.GridNode]
-					if currentState == args.NodeState {
-						score.Grid.Nodes[args.GridRow][args.GridNode] = game.Empty
-						if web.arena.MatchState == field.AutoPeriod || web.arena.MatchState == field.PausePeriod {
-							score.Grid.AutoScoring[args.GridRow][args.GridNode] = false
-						}
-					} else {
-						score.Grid.Nodes[args.GridRow][args.GridNode] = args.NodeState
-						if web.arena.MatchState == field.AutoPeriod || web.arena.MatchState == field.PausePeriod {
-							score.Grid.AutoScoring[args.GridRow][args.GridNode] = true
-						}
-					}
-					scoreChanged = true
-				}
+				// case "gridAutoScoring":
+				// 	if args.GridRow >= 0 && args.GridRow <= 2 && args.GridNode >= 0 && args.GridNode <= 8 {
+				// 		score.Grid.AutoScoring[args.GridRow][args.GridNode] =
+				// 			!score.Grid.AutoScoring[args.GridRow][args.GridNode]
+				// 		scoreChanged = true
+				// 	}
+				// case "gridNode":
+				// 	if args.GridRow >= 0 && args.GridRow <= 2 && args.GridNode >= 0 && args.GridNode <= 8 {
+				// 		currentState := score.Grid.Nodes[args.GridRow][args.GridNode]
+				// 		if currentState == args.NodeState {
+				// 			score.Grid.Nodes[args.GridRow][args.GridNode] = game.Empty
+				// 			if web.arena.MatchState == field.AutoPeriod || web.arena.MatchState == field.PausePeriod {
+				// 				score.Grid.AutoScoring[args.GridRow][args.GridNode] = false
+				// 			}
+				// 		} else {
+				// 			score.Grid.Nodes[args.GridRow][args.GridNode] = args.NodeState
+				// 			if web.arena.MatchState == field.AutoPeriod || web.arena.MatchState == field.PausePeriod {
+				// 				score.Grid.AutoScoring[args.GridRow][args.GridNode] = true
+				// 			}
+				// 		}
+				// 		scoreChanged = true
+				// 	}
 			}
 
 			if scoreChanged {

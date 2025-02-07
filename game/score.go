@@ -5,20 +5,20 @@
 
 package game
 
+import "fmt"
+
 type Score struct {
-	MobilityStatuses          [3]bool
-	Grid                      Grid
-	AutoDockStatuses          [3]bool
-	AutoChargeStationLevel    bool
-	EndgameStatuses           [3]EndgameStatus
-	EndgameChargeStationLevel bool
-	Fouls                     []Foul
-	PlayoffDq                 bool
+	LeaveStatuses   [3]bool
+	AlgaeCoral      AlgaeCoral
+	EndgameStatuses [3]EndgameStatus
+	Fouls           []Foul
+	PlayoffDq       bool
 }
 
-var SustainabilityBonusLinkThresholdWithoutCoop = 7
-var SustainabilityBonusLinkThresholdWithCoop = 6
-var ActivationBonusPointThreshold = 26
+var CoralPerLevelThreshold = 5
+var CoralNumLevelsThresholdWithoutCoop = 4
+var CoralNumLevelsThresholdWithCoop = 3
+var BargePointsThreshold = 14
 
 // Represents the state of a robot at the end of the match.
 type EndgameStatus int
@@ -26,12 +26,14 @@ type EndgameStatus int
 const (
 	EndgameNone EndgameStatus = iota
 	EndgameParked
-	EndgameDocked
+	EndgameShallow
+	EndgameDeep
 )
 
 // Calculates and returns the summary fields used for ranking and display.
 func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	summary := new(ScoreSummary)
+	fmt.Printf("endgame statuses are %v\n", score.EndgameStatuses)
 
 	// Leave the score at zero if the alliance was disqualified.
 	if score.PlayoffDq {
@@ -39,44 +41,33 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	}
 
 	// Calculate autonomous period points.
-	for _, mobility := range score.MobilityStatuses {
-		if mobility {
-			summary.MobilityPoints += 3
+	for _, leave := range score.LeaveStatuses {
+		if leave {
+			summary.LeavePoints += 3
 		}
 	}
-	autoGridPoints := score.Grid.AutoGamePiecePoints()
-	autoChargeStationPoints := 0
-	for i := 0; i < 3; i++ {
-		if score.AutoDockStatuses[i] {
-			autoChargeStationPoints += 8
-			if score.AutoChargeStationLevel {
-				autoChargeStationPoints += 4
-			}
-			break
-		}
-	}
-	summary.AutoPoints = summary.MobilityPoints + autoGridPoints + autoChargeStationPoints
+	autoAlgaeCoralPoints := score.AlgaeCoral.AutoGamePiecePoints()
+
+	summary.AutoPoints = summary.LeavePoints + autoAlgaeCoralPoints
 
 	// Calculate teleoperated period points.
-	teleopGridPoints := score.Grid.TeleopGamePiecePoints() + score.Grid.LinkPoints() + score.Grid.SuperchargedPoints()
-	teleopChargeStationPoints := 0
+	teleopAlgaeAutoPoints := score.AlgaeCoral.TeleopGamePiecePoints()
+
 	for i := 0; i < 3; i++ {
 		switch score.EndgameStatuses[i] {
 		case EndgameParked:
-			summary.ParkPoints += 2
-		case EndgameDocked:
-			teleopChargeStationPoints += 6
-			if score.EndgameChargeStationLevel {
-				teleopChargeStationPoints += 4
-			}
+			summary.EndgamePoints += 2
+		case EndgameShallow:
+			summary.EndgamePoints += 6
+		case EndgameDeep:
+			summary.EndgamePoints += 12
 		}
 	}
 
-	summary.GridPoints = autoGridPoints + teleopGridPoints
-	summary.ChargeStationPoints = autoChargeStationPoints + teleopChargeStationPoints
-	summary.EndgamePoints = teleopChargeStationPoints + summary.ParkPoints
-	summary.MatchPoints = summary.MobilityPoints + summary.GridPoints + summary.ChargeStationPoints + summary.ParkPoints
+	summary.AlgaeCoralPoints = autoAlgaeCoralPoints + teleopAlgaeAutoPoints
+	summary.MatchPoints = summary.LeavePoints + summary.AlgaeCoralPoints + summary.EndgamePoints
 
+	fmt.Printf("match points is %v\n", summary.MatchPoints)
 	// Calculate penalty points.
 	for _, foul := range opponentScore.Fouls {
 		summary.FoulPoints += foul.PointValue()
@@ -89,7 +80,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		if rule != nil {
 			// Check for the opponent fouls that automatically trigger a ranking point.
 			if rule.IsRankingPoint {
-				summary.SustainabilityBonusRankingPoint = true
+				summary.BargeRankingPoint = true // TODO - check which RP
 			}
 		}
 	}
@@ -97,23 +88,46 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	summary.Score = summary.MatchPoints + summary.FoulPoints
 
 	// Calculate bonus ranking points.
-	summary.CoopertitionBonus = score.Grid.IsCoopertitionThresholdAchieved() &&
-		opponentScore.Grid.IsCoopertitionThresholdAchieved()
-	summary.NumLinks = len(score.Grid.Links())
-	summary.NumLinksGoal = SustainabilityBonusLinkThresholdWithoutCoop
-	// A SustainabilityBonusLinkThresholdWithCoop of 0 disables the coopertition bonus.
-	if SustainabilityBonusLinkThresholdWithCoop > 0 && summary.CoopertitionBonus {
-		summary.NumLinksGoal = SustainabilityBonusLinkThresholdWithCoop
+	allRobotsLeft := true
+	for i := 0; i < 3; i++ {
+		allRobotsLeft = allRobotsLeft && score.LeaveStatuses[i]
 	}
-	if summary.NumLinks >= summary.NumLinksGoal {
-		summary.SustainabilityBonusRankingPoint = true
+	anyCoralScored := false
+	for level := levelOne; level < levelCount; level++ {
+		if score.AlgaeCoral.CoralAutoCount[level] > 0 {
+			anyCoralScored = true
+		}
 	}
-	summary.ActivationBonusRankingPoint = summary.ChargeStationPoints >= ActivationBonusPointThreshold
+	// An AutoRankingPoint is achieved if all robots leave nd there's
+	summary.AutoRankingPoint = allRobotsLeft && anyCoralScored
 
-	if summary.SustainabilityBonusRankingPoint {
+	summary.CoopertitionBonus = score.AlgaeCoral.IsCoopertitionThresholdAchieved() &&
+		opponentScore.AlgaeCoral.IsCoopertitionThresholdAchieved()
+
+	levelsAboveThreshold := 0
+	allLevels := score.AlgaeCoral.TotalCoral()
+	for level := levelOne; level < levelCount; level++ {
+		if allLevels[level] > CoralPerLevelThreshold {
+			levelsAboveThreshold++
+		}
+	}
+
+	enoughLevels := levelsAboveThreshold >= CoralNumLevelsThresholdWithoutCoop
+	if summary.CoopertitionBonus {
+		enoughLevels = levelsAboveThreshold >= CoralNumLevelsThresholdWithCoop
+	}
+
+	summary.CoralRankingPoint = enoughLevels
+
+	summary.BargeRankingPoint = summary.EndgamePoints >= BargePointsThreshold
+
+	if summary.AutoRankingPoint {
 		summary.BonusRankingPoints++
 	}
-	if summary.ActivationBonusRankingPoint {
+	if summary.CoralRankingPoint {
+		summary.BonusRankingPoints++
+	}
+	if summary.BargeRankingPoint {
 		summary.BonusRankingPoints++
 	}
 
@@ -122,12 +136,9 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 
 // Returns true if and only if all fields of the two scores are equal.
 func (score *Score) Equals(other *Score) bool {
-	if score.MobilityStatuses != other.MobilityStatuses ||
-		score.Grid != other.Grid ||
-		score.AutoDockStatuses != other.AutoDockStatuses ||
-		score.AutoChargeStationLevel != other.AutoChargeStationLevel ||
+	if score.LeaveStatuses != other.LeaveStatuses ||
+		score.AlgaeCoral != other.AlgaeCoral ||
 		score.EndgameStatuses != other.EndgameStatuses ||
-		score.EndgameChargeStationLevel != other.EndgameChargeStationLevel ||
 		score.PlayoffDq != other.PlayoffDq ||
 		len(score.Fouls) != len(other.Fouls) {
 		return false

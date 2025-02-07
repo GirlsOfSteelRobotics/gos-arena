@@ -12,16 +12,12 @@
     <div class="scoring-header">
       <div>&nbsp;</div>
       <div>Mobility</div>
-      <div>Auto Dock</div>
       <div>Endgame</div>
     </div>
     {{range $i := seq 3}}
       <div>
         <div id="team{{$i}}" class="team robot-field"></div>
-        <div id="mobilityStatus{{$i}}" class="boolean robot-field" onclick="handleClick('mobilityStatus', {{$i}});">
-          <div class="value"></div>
-        </div>
-        <div id="autoDockStatus{{$i}}" class="boolean robot-field" onclick="handleClick('autoDockStatus', {{$i}});">
+        <div id="leaveStatus{{$i}}" class="boolean robot-field" onclick="handleClick('leaveStatus', {{$i}});">
           <div class="value"></div>
         </div>
         <div id="endgameStatus{{$i}}" class="endgame-status robot-field"
@@ -31,9 +27,9 @@
       </div>
     {{end}}
   </div>
-  <div id="chargeStation" class="scoring-section">
-    <div id="autoChargeStationLevel" class="charge-station-level robot-field"
-      onclick="handleClick('autoChargeStationLevel');">
+  <div id="algae" class="scoring-section">
+    <div id="algaeProcessor" class="robot-field"
+      onclick="handleClick('algaeProcessor');">
       <div class="value"></div>
     </div>
     <div>Auto</div>

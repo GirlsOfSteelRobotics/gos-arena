@@ -161,7 +161,7 @@ func (arena *Arena) LoadSettings() error {
 	)
 	arena.networkSwitch = network.NewSwitch(settings.SwitchAddress, settings.SwitchPassword)
 	arena.Plc.SetAddress(settings.PlcAddress)
-	arena.TbaClient = partner.NewTbaClient(settings.TbaEventCode, settings.TbaSecretId, settings.TbaSecret)
+	// arena.TbaClient = partner.NewTbaClient(settings.TbaEventCode, settings.TbaSecretId, settings.TbaSecret)
 
 	game.MatchTiming.WarmupDurationSec = settings.WarmupDurationSec
 	game.MatchTiming.AutoDurationSec = settings.AutoDurationSec
@@ -171,9 +171,9 @@ func (arena *Arena) LoadSettings() error {
 	game.UpdateMatchSounds()
 	arena.MatchTimingNotifier.Notify()
 
-	game.SustainabilityBonusLinkThresholdWithoutCoop = settings.SustainabilityBonusLinkThresholdWithoutCoop
-	game.SustainabilityBonusLinkThresholdWithCoop = settings.SustainabilityBonusLinkThresholdWithCoop
-	game.ActivationBonusPointThreshold = settings.ActivationBonusPointThreshold
+	game.CoralPerLevelThreshold = settings.CoralPerLevelThreshold
+	game.CoralNumLevelsThresholdWithoutCoop = settings.CoralNumLevelsThresholdWithoutCoop
+	game.CoralNumLevelsThresholdWithCoop = settings.CoralNumLevelsThresholdWithCoop
 
 	// Reconstruct the playoff tournament in memory.
 	if err = arena.CreatePlayoffTournament(); err != nil {
@@ -828,9 +828,9 @@ func (arena *Arena) handlePlcInputOutput() {
 	teleopGracePeriod := matchStartTime.Add(game.GetDurationToTeleopEnd() + game.ChargeStationTeleopGracePeriod)
 	inGracePeriod := currentTime.Before(teleopGracePeriod)
 
-	redScore := &arena.RedRealtimeScore.CurrentScore
-	blueScore := &arena.BlueRealtimeScore.CurrentScore
 	redChargeStationLevel, blueChargeStationLevel := arena.Plc.GetChargeStationsLevel()
+	redAllianceReady := arena.checkAllianceStationsReady("R1", "R2", "R3") == nil
+	blueAllianceReady := arena.checkAllianceStationsReady("B1", "B2", "B3") == nil
 
 	switch arena.MatchState {
 	case PreMatch:
@@ -843,8 +843,6 @@ func (arena *Arena) handlePlcInputOutput() {
 	case PostTimeout:
 		// Set the stack light state -- solid alliance color(s) if robots are not connected, solid orange if scores are
 		// not input, or blinking green if ready.
-		redAllianceReady := arena.checkAllianceStationsReady("R1", "R2", "R3") == nil
-		blueAllianceReady := arena.checkAllianceStationsReady("B1", "B2", "B3") == nil
 		greenStackLight := redAllianceReady && blueAllianceReady && arena.Plc.GetCycleState(2, 0, 2)
 		arena.Plc.SetStackLights(!redAllianceReady, !blueAllianceReady, false, greenStackLight)
 		arena.Plc.SetStackBuzzer(redAllianceReady && blueAllianceReady)
@@ -876,14 +874,12 @@ func (arena *Arena) handlePlcInputOutput() {
 			go func() {
 				// Capture a single reading of the charge station levels after the grace period following the match.
 				time.Sleep(game.ChargeStationTeleopGracePeriod)
-				redScore.EndgameChargeStationLevel, blueScore.EndgameChargeStationLevel =
-					arena.Plc.GetChargeStationsLevel()
 				arena.RealtimeScoreNotifier.Notify()
 			}()
 		}
 	case AutoPeriod:
 		arena.Plc.SetStackBuzzer(false)
-		arena.Plc.SetStackLights(false, false, false, true)
+		arena.Plc.SetStackLights(!redAllianceReady, !blueAllianceReady, false, true)
 		fallthrough
 	case PausePeriod:
 		// Game-specific PLC functions.
@@ -891,9 +887,9 @@ func (arena *Arena) handlePlcInputOutput() {
 	case TeleopPeriod:
 		// Game-specific PLC functions.
 		arena.Plc.SetChargeStationLights(redChargeStationLevel, blueChargeStationLevel)
+		arena.Plc.SetStackLights(!redAllianceReady, !blueAllianceReady, false, true)
 		if arena.lastMatchState != TeleopPeriod {
 			// Capture a single reading of the charge station levels after the autonomous pause.
-			redScore.AutoChargeStationLevel, blueScore.AutoChargeStationLevel = arena.Plc.GetChargeStationsLevel()
 			arena.RealtimeScoreNotifier.Notify()
 		}
 	}

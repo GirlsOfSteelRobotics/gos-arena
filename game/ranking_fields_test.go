@@ -4,16 +4,17 @@
 package game
 
 import (
-	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"sort"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAddScoreSummary(t *testing.T) {
 	rand.Seed(0)
 	redSummary := &ScoreSummary{
-		MobilityPoints:                  4,
+		LeavePoints:                     4,
 		AutoPoints:                      30,
 		ChargeStationPoints:             19,
 		MatchPoints:                     67,
@@ -23,7 +24,7 @@ func TestAddScoreSummary(t *testing.T) {
 		BonusRankingPoints:              1,
 	}
 	blueSummary := &ScoreSummary{
-		MobilityPoints:                  2,
+		LeavePoints:                     2,
 		AutoPoints:                      16,
 		ChargeStationPoints:             14,
 		MatchPoints:                     61,

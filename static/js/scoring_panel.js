@@ -50,27 +50,10 @@ const handleRealtimeScore = function(data) {
 
   for (let i = 0; i < 3; i++) {
     const i1 = i + 1;
-    $(`#mobilityStatus${i1}>.value`).text(score.MobilityStatuses[i] ? "Yes" : "No");
-    $("#mobilityStatus" + i1).attr("data-value", score.MobilityStatuses[i]);
-    $("#autoDockStatus" + i1 + ">.value").text(score.AutoDockStatuses[i] ? "Yes" : "No");
-    $("#autoDockStatus" + i1).attr("data-value", score.AutoDockStatuses[i]);
+    $(`#leaveStatus${i1}>.value`).text(score.LeaveStatuses[i] ? "Yes" : "No");
+    $("#leaveStatus" + i1).attr("data-value", score.LeaveStatuses[i]);
     $("#endgameStatus" + i1 + ">.value").text(getEndgameStatusText(score.EndgameStatuses[i]));
     $("#endgameStatus" + i1).attr("data-value", score.EndgameStatuses[i]);
-  }
-
-  $("#autoChargeStationLevel>.value").text(score.AutoChargeStationLevel ? "Level" : "Not Level");
-  $("#autoChargeStationLevel").attr("data-value", score.AutoChargeStationLevel);
-  $("#endgameChargeStationLevel>.value").text(score.EndgameChargeStationLevel ? "Level" : "Not Level");
-  $("#endgameChargeStationLevel").attr("data-value", score.EndgameChargeStationLevel);
-
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 9; j++) {
-      $(`#gridAutoScoringRow${i}Node${j}`).attr("data-value", score.Grid.AutoScoring[i][j]);
-      $(`#gridNodeStatesRow${i}Node${j}`).children().each(function() {
-        const element = $(this);
-        element.attr("data-value", element.attr("data-node-state") === score.Grid.Nodes[i][j].toString());
-      });
-    }
   }
 };
 
@@ -92,7 +75,9 @@ const getEndgameStatusText = function(level) {
     case 1:
       return "Park";
     case 2:
-      return "Dock";
+      return "Shallow";
+    case 3:
+      return "Deep";
     default:
       return "None";
   }

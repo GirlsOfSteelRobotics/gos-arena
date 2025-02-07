@@ -4,8 +4,9 @@
 package game
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestScoreSummary(t *testing.T) {
@@ -13,9 +14,9 @@ func TestScoreSummary(t *testing.T) {
 	blueScore := TestScore2()
 
 	redSummary := redScore.Summarize(blueScore)
-	assert.Equal(t, 6, redSummary.MobilityPoints)
+	assert.Equal(t, 6, redSummary.LeavePoints)
 	assert.Equal(t, 36, redSummary.AutoPoints)
-	assert.Equal(t, 52, redSummary.GridPoints)
+	assert.Equal(t, 52, redSummary.AlgaeCoralPoints)
 	assert.Equal(t, 18, redSummary.ChargeStationPoints)
 	assert.Equal(t, 2, redSummary.ParkPoints)
 	assert.Equal(t, 12, redSummary.EndgamePoints)
@@ -24,16 +25,16 @@ func TestScoreSummary(t *testing.T) {
 	assert.Equal(t, 78, redSummary.Score)
 	assert.Equal(t, false, redSummary.CoopertitionBonus)
 	assert.Equal(t, 0, redSummary.NumLinks)
-	assert.Equal(t, 7, redSummary.NumLinksGoal)
+	assert.Equal(t, 6, redSummary.NumLinksGoal)
 	assert.Equal(t, false, redSummary.SustainabilityBonusRankingPoint)
 	assert.Equal(t, false, redSummary.ActivationBonusRankingPoint)
 	assert.Equal(t, 0, redSummary.BonusRankingPoints)
 	assert.Equal(t, 0, redSummary.NumOpponentTechFouls)
 
 	blueSummary := blueScore.Summarize(redScore)
-	assert.Equal(t, 3, blueSummary.MobilityPoints)
+	assert.Equal(t, 3, blueSummary.LeavePoints)
 	assert.Equal(t, 43, blueSummary.AutoPoints)
-	assert.Equal(t, 154, blueSummary.GridPoints)
+	assert.Equal(t, 154, blueSummary.AlgaeCoralPoints)
 	assert.Equal(t, 30, blueSummary.ChargeStationPoints)
 	assert.Equal(t, 0, blueSummary.ParkPoints)
 	assert.Equal(t, 18, blueSummary.EndgamePoints)
@@ -42,7 +43,7 @@ func TestScoreSummary(t *testing.T) {
 	assert.Equal(t, 216, blueSummary.Score)
 	assert.Equal(t, false, blueSummary.CoopertitionBonus)
 	assert.Equal(t, 9, blueSummary.NumLinks)
-	assert.Equal(t, 7, blueSummary.NumLinksGoal)
+	assert.Equal(t, 6, blueSummary.NumLinksGoal)
 	assert.Equal(t, true, blueSummary.SustainabilityBonusRankingPoint)
 	assert.Equal(t, true, blueSummary.ActivationBonusRankingPoint)
 	assert.Equal(t, 2, blueSummary.BonusRankingPoints)
@@ -69,11 +70,11 @@ func TestScoreSustainabilityBonusRankingPoint(t *testing.T) {
 	blueScoreSummary := blueScore.Summarize(redScore)
 	assert.Equal(t, false, redScoreSummary.CoopertitionBonus)
 	assert.Equal(t, 0, redScoreSummary.NumLinks)
-	assert.Equal(t, 7, redScoreSummary.NumLinksGoal)
+	assert.Equal(t, 6, redScoreSummary.NumLinksGoal)
 	assert.Equal(t, false, redScoreSummary.SustainabilityBonusRankingPoint)
 	assert.Equal(t, false, blueScoreSummary.CoopertitionBonus)
 	assert.Equal(t, 9, blueScoreSummary.NumLinks)
-	assert.Equal(t, 7, blueScoreSummary.NumLinksGoal)
+	assert.Equal(t, 6, blueScoreSummary.NumLinksGoal)
 	assert.Equal(t, true, blueScoreSummary.SustainabilityBonusRankingPoint)
 
 	// Reduce blue links to 8 and verify that the bonus is still awarded.
@@ -82,11 +83,11 @@ func TestScoreSustainabilityBonusRankingPoint(t *testing.T) {
 	blueScoreSummary = blueScore.Summarize(redScore)
 	assert.Equal(t, false, redScoreSummary.CoopertitionBonus)
 	assert.Equal(t, 0, redScoreSummary.NumLinks)
-	assert.Equal(t, 7, redScoreSummary.NumLinksGoal)
+	assert.Equal(t, 6, redScoreSummary.NumLinksGoal)
 	assert.Equal(t, false, redScoreSummary.SustainabilityBonusRankingPoint)
 	assert.Equal(t, false, blueScoreSummary.CoopertitionBonus)
 	assert.Equal(t, 8, blueScoreSummary.NumLinks)
-	assert.Equal(t, 7, blueScoreSummary.NumLinksGoal)
+	assert.Equal(t, 6, blueScoreSummary.NumLinksGoal)
 	assert.Equal(t, true, blueScoreSummary.SustainabilityBonusRankingPoint)
 
 	// Increase non-coopertition threshold to 9.
@@ -122,11 +123,11 @@ func TestScoreSustainabilityBonusRankingPoint(t *testing.T) {
 	blueScoreSummary = blueScore.Summarize(redScore)
 	assert.Equal(t, true, redScoreSummary.CoopertitionBonus)
 	assert.Equal(t, 0, redScoreSummary.NumLinks)
-	assert.Equal(t, 6, redScoreSummary.NumLinksGoal)
+	assert.Equal(t, 5, redScoreSummary.NumLinksGoal)
 	assert.Equal(t, false, redScoreSummary.SustainabilityBonusRankingPoint)
 	assert.Equal(t, true, blueScoreSummary.CoopertitionBonus)
 	assert.Equal(t, 6, blueScoreSummary.NumLinks)
-	assert.Equal(t, 6, blueScoreSummary.NumLinksGoal)
+	assert.Equal(t, 5, blueScoreSummary.NumLinksGoal)
 	assert.Equal(t, true, blueScoreSummary.SustainabilityBonusRankingPoint)
 
 	// Reduce coopertition threshold to 1 and make red fulfill the sustainability bonus requirement.

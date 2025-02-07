@@ -6,22 +6,19 @@
 package game
 
 type ScoreSummary struct {
-	MobilityPoints                  int
-	AutoPoints                      int
-	GridPoints                      int
-	ChargeStationPoints             int
-	ParkPoints                      int
-	EndgamePoints                   int
-	MatchPoints                     int
-	FoulPoints                      int
-	Score                           int
-	CoopertitionBonus               bool
-	NumLinks                        int
-	NumLinksGoal                    int
-	SustainabilityBonusRankingPoint bool
-	ActivationBonusRankingPoint     bool
-	BonusRankingPoints              int
-	NumOpponentTechFouls            int
+	LeavePoints          int
+	AutoPoints           int  // leaving, plus coral/algae scored in auto
+	AlgaeCoralPoints     int  // algae & coral scored in teleop
+	EndgamePoints        int  // PARK, SHALLOW, OR DEEP
+	MatchPoints          int  // total match points
+	FoulPoints           int  // points from fouls
+	Score                int  // total score?
+	CoopertitionBonus    bool // whether or not coopertition is activated
+	AutoRankingPoint     bool
+	CoralRankingPoint    bool
+	BargeRankingPoint    bool
+	BonusRankingPoints   int
+	NumOpponentTechFouls int
 }
 
 type MatchStatus int
@@ -52,11 +49,11 @@ func DetermineMatchStatus(redScoreSummary, blueScoreSummary *ScoreSummary, apply
 			return status
 		}
 		if status := comparePoints(
-			redScoreSummary.ChargeStationPoints, blueScoreSummary.ChargeStationPoints,
+			redScoreSummary.AutoPoints, blueScoreSummary.AutoPoints,
 		); status != TieMatch {
 			return status
 		}
-		if status := comparePoints(redScoreSummary.AutoPoints, blueScoreSummary.AutoPoints); status != TieMatch {
+		if status := comparePoints(redScoreSummary.EndgamePoints, blueScoreSummary.EndgamePoints); status != TieMatch {
 			return status
 		}
 	}

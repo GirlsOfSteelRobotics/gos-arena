@@ -135,6 +135,8 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 					}
 					scoreChanged = true
 				}
+			case "algae":
+				score.AlgaeCoral.AlgaeTeleopNetCount
 			default:
 				auto, level, down := parseCommand(command)
 				if auto {

@@ -63,6 +63,16 @@ const handleRealtimeScore = function(data) {
     $("#teleopCoral" + i1 +">.value").text(score.AlgaeCoral.CoralTeleopCount[i]);
     $("#teleopCoral" + i1+ ">.value").attr("data-value", score.AlgaeCoral.CoralTeleopCount[i]);
   }
+
+  $("#autoAlgaeNet>.value").text(score.AlgaeCoral.AlgaeAutoNetCount);
+  $("#autoAlgaeNet>.value").attr("data-value", score.AlgaeCoral.AlgaeAutoNetCount);
+  $("#teleopAlgaeNet>.value").text(score.AlgaeCoral.AlgaeTeleopNetCount);
+  $("#teleopAlgaeNet>.value").attr("data-value", score.AlgaeCoral.AlgaeTeleopNetCount);
+
+  $("#autoAlgaeProcessor>.value").text(score.AlgaeCoral.AlgaeAutoProcessorCount);
+  $("#autoAlgaeProcessor>.value").attr("data-value", score.AlgaeCoral.AlgaeAutoProcessorCount);
+  $("#teleopAlgaeProcessor>.value").text(score.AlgaeCoral.AlgaeTeleopProcessorCount);
+  $("#teleopAlgaeProcessor>.value").attr("data-value", score.AlgaeCoral.AlgaeTeleopProcessorCount);
 };
 
 // Handles an element click and sends the appropriate websocket message.

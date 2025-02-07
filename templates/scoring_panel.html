@@ -11,7 +11,7 @@
   <div class="scoring-section">
     <div class="scoring-header">
       <div>&nbsp;</div>
-      <div>Mobility</div>
+      <div>Leave</div>
       <div>Endgame</div>
     </div>
     {{range $i := seq 3}}
@@ -27,38 +27,49 @@
       </div>
     {{end}}
   </div>
+  <header class="section-header">Algae</header>
   <div id="algae" class="scoring-section">
-    <div id="algaeProcessor" class="robot-field"
-      onclick="handleClick('algaeProcessor');">
-      <div class="value"></div>
-    </div>
-    <div id="endgameChargeStationLevel" class="charge-station-level robot-field"
-      onclick="handleClick('endgameChargeStationLevel');">
-      <div class="value"></div>
-    </div>
-  </div>
-  <div id="coral">
     <div class="scoring-section">
       <div>
         <div>&nbsp;</div>
-        <div class="goal-header">Level 4</div>
-        <div class="goal-header">Level 3</div>
-        <div class="goal-header">Level 2</div>
-        <div class="goal-header">Level 1</div>
+        <div class="scoring-header">Processor</div>
+        <div class="scoring-header">Net</div>
       </div>
       <div>
-        <div class="goal-period">Auto</div>
-        {{template "goal" dict "period" "auto" "level" "4"}}
-        {{template "goal" dict "period" "auto" "level" "3"}}
-        {{template "goal" dict "period" "auto" "level" "2"}}
-        {{template "goal" dict "period" "auto" "level" "1"}}
+        <div class="scoring-period">Auto</div>
+        {{template "algae" dict "period" "auto" "location" "Processor"}}
+        {{template "algae" dict "period" "auto" "location" "Net"}}
       </div>
       <div>
-        <div class="goal-period">Teleop</div>
-        {{template "goal" dict "period" "teleop" "level" "4"}}
-        {{template "goal" dict "period" "teleop" "level" "3"}}
-        {{template "goal" dict "period" "teleop" "level" "2"}}
-        {{template "goal" dict "period" "teleop" "level" "1"}}
+        <div class="scoring-period">Teleop</div>
+        {{template "algae" dict "period" "teleop" "location" "Processor"}}
+        {{template "algae" dict "period" "teleop" "location" "Net"}}
+      </div>
+    </div>
+  </div>
+  <div id="coral">
+    <header class="section-header">Coral</header>
+    <div class="scoring-section">
+      <div>
+        <div>&nbsp;</div>
+        <div class="scoring-header">Level 4</div>
+        <div class="scoring-header">Level 3</div>
+        <div class="scoring-header">Level 2</div>
+        <div class="scoring-header">Level 1</div>
+      </div>
+      <div>
+        <div class="scoring-period">Auto</div>
+        {{template "coral" dict "period" "auto" "level" "4"}}
+        {{template "coral" dict "period" "auto" "level" "3"}}
+        {{template "coral" dict "period" "auto" "level" "2"}}
+        {{template "coral" dict "period" "auto" "level" "1"}}
+      </div>
+      <div>
+        <div class="scoring-period">Teleop</div>
+        {{template "coral" dict "period" "teleop" "level" "4"}}
+        {{template "coral" dict "period" "teleop" "level" "3"}}
+        {{template "coral" dict "period" "teleop" "level" "2"}}
+        {{template "coral" dict "period" "teleop" "level" "1"}}
       </div>
     </div>
 </div>
@@ -78,10 +89,18 @@
 <script src="/static/js/match_timing.js"></script>
 <script src="/static/js/scoring_panel.js"></script>
 {{end}}
-{{define "goal"}}
-<div class="goal">
+{{define "coral"}}
+<div class="scoring">
   <div class="number-button minus" onclick="handleClick('{{.period}}Coral{{.level}}Minus');">-</div>
   <div id="{{.period}}Coral{{.level}}"><div class="value"></div></div>
   <div class="number-button plus" onclick="handleClick('{{.period}}Coral{{.level}}Plus');">+</div>
+</div>
+{{end}}
+
+{{define "algae"}}
+<div class="scoring">
+  <div class="number-button minus" onclick="handleClick('{{.period}}Algae{{.location}}Minus');">-</div>
+  <div id="{{.period}}Algae{{.location}}"><div class="value"></div></div>
+  <div class="number-button plus" onclick="handleClick('{{.period}}Algae{{.location}}Plus');">+</div>
 </div>
 {{end}}

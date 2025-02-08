@@ -35,7 +35,6 @@ const (
 // Calculates and returns the summary fields used for ranking and display.
 func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	summary := new(ScoreSummary)
-	fmt.Printf("endgame statuses are %v\n", score.EndgameStatuses)
 
 	// Leave the score at zero if the alliance was disqualified.
 	if score.PlayoffDq {
@@ -69,7 +68,6 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	summary.AlgaeCoralPoints = autoAlgaeCoralPoints + teleopAlgaeAutoPoints
 	summary.MatchPoints = summary.LeavePoints + summary.AlgaeCoralPoints + summary.EndgamePoints
 
-	fmt.Printf("match points is %v\n", summary.MatchPoints)
 	// Calculate penalty points.
 	for _, foul := range opponentScore.Fouls {
 		summary.FoulPoints += foul.PointValue()
@@ -110,20 +108,15 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	allLevels := score.AlgaeCoral.TotalCoral()
 	for level := levelOne; level < levelCount; level++ {
 		if allLevels[level] > CoralPerLevelThreshold {
-			fmt.Printf("allLevels[%v] is %v", level, allLevels[level])
 			levelsAboveThreshold++
 		}
 	}
-	fmt.Printf("levelsAboveThreshold is %v\n", levelsAboveThreshold)
-	fmt.Printf("with is %v\n", CoralNumLevelsThresholdWithCoop)
-	fmt.Printf("without is %v\n", CoralNumLevelsThresholdWithoutCoop)
 
 	enoughLevels := levelsAboveThreshold >= CoralNumLevelsThresholdWithoutCoop
 	if summary.CoopertitionBonus {
 		enoughLevels = levelsAboveThreshold >= CoralNumLevelsThresholdWithCoop
 	}
 
-	fmt.Printf("enoughLEvels is %v\n", enoughLevels)
 	summary.CoralRankingPoint = enoughLevels
 
 	summary.BargeRankingPoint = summary.EndgamePoints >= BargePointsThreshold

@@ -5,8 +5,6 @@
 
 package game
 
-import "fmt"
-
 type Score struct {
 	LeaveStatuses   [3]bool
 	AlgaeCoral      AlgaeCoral

@@ -81,7 +81,7 @@ const handleMatchTime = function(data) {
 
 // Handles a websocket message to update the realtime scoring fields.
 const handleRealtimeScore = function(data) {
-  for (const [teamId, card] of Object.entries(Object.assign(data.RedCards, data.BlueCards))) {
+  for (const [teamId, card] of Object.entries(Object.append(data.RedCards, data.BlueCards))) {
     $(`[data-team="${teamId}"]`).attr("data-card", card);
   }
 

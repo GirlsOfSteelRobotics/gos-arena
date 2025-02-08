@@ -160,8 +160,8 @@ const handleScorePosted = function(data) {
     setTeamInfo(redSide, 4, 0, data.RedRankings);
   }
   $("#" + redSide + "FinalLeavePoints").text(data.RedScoreSummary.LeavePoints);
-  $("#" + redSide + "FinalAlgaeCoralPoints").text(data.RedScoreSummary.AlgaeCoralPoints);
-  // $("#" + redSide + "FinalAlgaePoints").text(data.RedScoreSummary.AlgaePoints);
+  $("#" + redSide + "FinalCoralPoints").text(data.RedScoreSummary.CoralPoints);
+  $("#" + redSide + "FinalAlgaePoints").text(data.RedScoreSummary.AlgaePoints);
   $("#" + redSide + "FinalBargePoints").text(data.RedScoreSummary.EndgamePoints);
   $("#" + redSide + "FinalFoulPoints").text(data.RedScoreSummary.FoulPoints);
   $("#" + redSide + "FinalAutoBonusRankingPoint").html(
@@ -200,8 +200,8 @@ const handleScorePosted = function(data) {
     setTeamInfo(blueSide, 4, 0, data.BlueRankings);
   }
   $("#" + blueSide + "FinalLeavePoints").text(data.BlueScoreSummary.LeavePoints);
-  $("#" + blueSide + "FinalAlgaeCoralPoints").text(data.BlueScoreSummary.AlgaeCoralPoints);
-  // $("#" + blueSide + "FinalAlgaePoints").text(data.BlueScoreSummary.AlgaePoints);
+  $("#" + blueSide + "FinalCoralPoints").text(data.BlueScoreSummary.CoralPoints);
+  $("#" + blueSide + "FinalAlgaePoints").text(data.BlueScoreSummary.AlgaePoints);
   $("#" + blueSide + "FinalBargePoints").text(data.BlueScoreSummary.EndgamePoints);
   $("#" + blueSide + "FinalFoulPoints").text(data.BlueScoreSummary.FoulPoints);
   $("#" + blueSide + "FinalAutoBonusRankingPoint").html(

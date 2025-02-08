@@ -32,8 +32,12 @@
   <div class="col-sm-2">{{.summary.LeavePoints}}</div>
 </div>
 <div class="row">
-  <div class="col-sm-7 col-sm-offset-1 control-label">Algae & Coral Points</div>
-  <div class="col-sm-2">{{.summary.AlgaeCoralPoints}}</div>
+  <div class="col-sm-7 col-sm-offset-1 control-label">Algae Points</div>
+  <div class="col-sm-2">{{.summary.AlgaePoints}}</div>
+</div>
+<div class="row">
+  <div class="col-sm-7 col-sm-offset-1 control-label">Coral Points</div>
+  <div class="col-sm-2">{{.summary.CoralPoints}}</div>
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-1 control-label">Endgame Barge Points</div>
@@ -45,15 +49,15 @@
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-1 control-label">Auto Bonus RP</div>
-  <div class="col-sm-2">{{if .summary.AutoBonusRankingPoint}}Yes{{else}}No{{end}}</div>
+  <div class="col-sm-2">{{if .summary.AutoRankingPoint}}Yes{{else}}No{{end}}</div>
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-1 control-label">Coral Bonus RP</div>
-  <div class="col-sm-2">{{if .summary.CoralBonusRankingPoint}}Yes{{else}}No{{end}}</div>
+  <div class="col-sm-2">{{if .summary.CoralRankingPoint}}Yes{{else}}No{{end}}</div>
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-1 control-label">Barge Bonus RP</div>
-  <div class="col-sm-2">{{if .summary.BargeBonusRankingPoint}}Yes{{else}}No{{end}}</div>
+  <div class="col-sm-2">{{if .summary.BargeRankingPoint}}Yes{{else}}No{{end}}</div>
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-1 control-label"><b>Final Score</b></div>

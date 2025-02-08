@@ -7,8 +7,10 @@ package game
 
 type ScoreSummary struct {
 	LeavePoints          int
-	AutoPoints           int  // leaving, plus coral/algae scored in auto
-	AlgaeCoralPoints     int  // algae & coral scored in teleop
+	AutoPoints           int // leaving, plus coral/algae scored in auto
+	AlgaePoints          int
+	AlgaeCoralPoints     int // algae & coral scored in teleop
+	CoralPoints          int
 	EndgamePoints        int  // PARK, SHALLOW, OR DEEP
 	MatchPoints          int  // total match points
 	FoulPoints           int  // points from fouls

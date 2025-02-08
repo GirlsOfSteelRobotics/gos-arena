@@ -50,7 +50,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	summary.AutoPoints = summary.LeavePoints + autoAlgaeCoralPoints
 
 	// Calculate teleoperated period points.
-	teleopAlgaeAutoPoints := score.AlgaeCoral.TeleopGamePiecePoints()
+	teleopAlgaeCoralPoints := score.AlgaeCoral.TeleopGamePiecePoints()
 
 	for i := 0; i < 3; i++ {
 		switch score.EndgameStatuses[i] {
@@ -63,7 +63,9 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		}
 	}
 
-	summary.AlgaeCoralPoints = autoAlgaeCoralPoints + teleopAlgaeAutoPoints
+	summary.AlgaeCoralPoints = autoAlgaeCoralPoints + teleopAlgaeCoralPoints
+	summary.AlgaePoints = score.AlgaeCoral.TotalAlgaePoints()
+	summary.CoralPoints = score.AlgaeCoral.TotalCoralPoints()
 	summary.MatchPoints = summary.LeavePoints + summary.AlgaeCoralPoints + summary.EndgamePoints
 
 	// Calculate penalty points.

@@ -174,6 +174,7 @@ func (arena *Arena) LoadSettings() error {
 	game.CoralPerLevelThreshold = settings.CoralPerLevelThreshold
 	game.CoralNumLevelsThresholdWithoutCoop = settings.CoralNumLevelsThresholdWithoutCoop
 	game.CoralNumLevelsThresholdWithCoop = settings.CoralNumLevelsThresholdWithCoop
+	game.BargePointsThreshold = settings.BargePointsThreshold
 
 	// Reconstruct the playoff tournament in memory.
 	if err = arena.CreatePlayoffTournament(); err != nil {

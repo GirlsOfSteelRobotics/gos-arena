@@ -110,15 +110,20 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	allLevels := score.AlgaeCoral.TotalCoral()
 	for level := levelOne; level < levelCount; level++ {
 		if allLevels[level] > CoralPerLevelThreshold {
+			fmt.Printf("allLevels[%v] is %v", level, allLevels[level])
 			levelsAboveThreshold++
 		}
 	}
+	fmt.Printf("levelsAboveThreshold is %v\n", levelsAboveThreshold)
+	fmt.Printf("with is %v\n", CoralNumLevelsThresholdWithCoop)
+	fmt.Printf("without is %v\n", CoralNumLevelsThresholdWithoutCoop)
 
 	enoughLevels := levelsAboveThreshold >= CoralNumLevelsThresholdWithoutCoop
 	if summary.CoopertitionBonus {
 		enoughLevels = levelsAboveThreshold >= CoralNumLevelsThresholdWithCoop
 	}
 
+	fmt.Printf("enoughLEvels is %v\n", enoughLevels)
 	summary.CoralRankingPoint = enoughLevels
 
 	summary.BargeRankingPoint = summary.EndgamePoints >= BargePointsThreshold

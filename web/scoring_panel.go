@@ -110,8 +110,6 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 		} else {
 			args := struct {
 				TeamPosition int
-				GridRow      int
-				GridNode     int
 			}{}
 			err = mapstructure.Decode(data, &args)
 			if err != nil {
@@ -194,33 +192,6 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 						}
 					}
 				}
-				// case "autoCoral1Plus":
-				// 	if score.AlgaeCoral.CoralAutoCount[0] < 12 {
-				// 		score.AlgaeCoral.CoralAutoCount[0]++
-				// 	}
-				// 	scoreChanged = true
-				// case "gridAutoScoring":
-				// 	if args.GridRow >= 0 && args.GridRow <= 2 && args.GridNode >= 0 && args.GridNode <= 8 {
-				// 		score.Grid.AutoScoring[args.GridRow][args.GridNode] =
-				// 			!score.Grid.AutoScoring[args.GridRow][args.GridNode]
-				// 		scoreChanged = true
-				// 	}
-				// case "gridNode":
-				// 	if args.GridRow >= 0 && args.GridRow <= 2 && args.GridNode >= 0 && args.GridNode <= 8 {
-				// 		currentState := score.Grid.Nodes[args.GridRow][args.GridNode]
-				// 		if currentState == args.NodeState {
-				// 			score.Grid.Nodes[args.GridRow][args.GridNode] = game.Empty
-				// 			if web.arena.MatchState == field.AutoPeriod || web.arena.MatchState == field.PausePeriod {
-				// 				score.Grid.AutoScoring[args.GridRow][args.GridNode] = false
-				// 			}
-				// 		} else {
-				// 			score.Grid.Nodes[args.GridRow][args.GridNode] = args.NodeState
-				// 			if web.arena.MatchState == field.AutoPeriod || web.arena.MatchState == field.PausePeriod {
-				// 				score.Grid.AutoScoring[args.GridRow][args.GridNode] = true
-				// 			}
-				// 		}
-				// 		scoreChanged = true
-				// 	}
 			}
 
 			if scoreChanged {

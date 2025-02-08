@@ -28,32 +28,32 @@
 {{define "alliance_match_result"}}
 <h4>Score</h4>
 <div class="row">
-  <div class="col-sm-7 col-sm-offset-1 control-label">Auto Mobility Points</div>
-  <div class="col-sm-2">{{.summary.MobilityPoints}}</div>
+  <div class="col-sm-7 col-sm-offset-1 control-label">Auto Leave Points</div>
+  <div class="col-sm-2">{{.summary.LeavePoints}}</div>
 </div>
 <div class="row">
-  <div class="col-sm-7 col-sm-offset-1 control-label">Grid Points</div>
-  <div class="col-sm-2">{{.summary.GridPoints}}</div>
+  <div class="col-sm-7 col-sm-offset-1 control-label">Algae & Coral Points</div>
+  <div class="col-sm-2">{{.summary.AlgaeCoralPoints}}</div>
 </div>
 <div class="row">
-  <div class="col-sm-7 col-sm-offset-1 control-label">Charge Station Points</div>
-  <div class="col-sm-2">{{.summary.ChargeStationPoints}}</div>
-</div>
-<div class="row">
-  <div class="col-sm-7 col-sm-offset-1 control-label">Endgame Park Points</div>
-  <div class="col-sm-2">{{.summary.ParkPoints}}</div>
+  <div class="col-sm-7 col-sm-offset-1 control-label">Endgame Barge Points</div>
+  <div class="col-sm-2">{{.summary.EndgamePoints}}</div>
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-1 control-label">Foul Points</div>
   <div class="col-sm-2">{{.summary.FoulPoints}}</div>
 </div>
 <div class="row">
-  <div class="col-sm-7 col-sm-offset-1 control-label">Sustainability Bonus RP</div>
-  <div class="col-sm-2">{{if .summary.SustainabilityBonusRankingPoint}}Yes{{else}}No{{end}}</div>
+  <div class="col-sm-7 col-sm-offset-1 control-label">Auto Bonus RP</div>
+  <div class="col-sm-2">{{if .summary.AutoBonusRankingPoint}}Yes{{else}}No{{end}}</div>
 </div>
 <div class="row">
-  <div class="col-sm-7 col-sm-offset-1 control-label">Activation Bonus RP</div>
-  <div class="col-sm-2">{{if .summary.ActivationBonusRankingPoint}}Yes{{else}}No{{end}}</div>
+  <div class="col-sm-7 col-sm-offset-1 control-label">Coral Bonus RP</div>
+  <div class="col-sm-2">{{if .summary.CoralBonusRankingPoint}}Yes{{else}}No{{end}}</div>
+</div>
+<div class="row">
+  <div class="col-sm-7 col-sm-offset-1 control-label">Barge Bonus RP</div>
+  <div class="col-sm-2">{{if .summary.BargeBonusRankingPoint}}Yes{{else}}No{{end}}</div>
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-1 control-label"><b>Final Score</b></div>

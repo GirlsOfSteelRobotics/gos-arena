@@ -88,5 +88,5 @@ func (algaeCoral *AlgaeCoral) coralTeleopPoints() int {
 }
 
 func (algaeCoral *AlgaeCoral) IsCoopertitionThresholdAchieved() bool {
-	return (algaeCoral.AlgaeAutoProcessorCount + algaeCoral.AlgaeTeleopNetCount) > 2
+	return (algaeCoral.AlgaeAutoProcessorCount + algaeCoral.AlgaeTeleopProcessorCount) >= 2
 }

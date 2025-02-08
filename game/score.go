@@ -107,7 +107,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 	levelsAboveThreshold := 0
 	allLevels := score.AlgaeCoral.TotalCoral()
 	for level := levelOne; level < levelCount; level++ {
-		if allLevels[level] > CoralPerLevelThreshold {
+		if allLevels[level] >= CoralPerLevelThreshold {
 			levelsAboveThreshold++
 		}
 	}

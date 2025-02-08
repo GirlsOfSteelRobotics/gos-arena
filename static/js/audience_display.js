@@ -165,22 +165,22 @@ const handleScorePosted = function(data) {
   $("#" + redSide + "FinalBargePoints").text(data.RedScoreSummary.EndgamePoints);
   $("#" + redSide + "FinalFoulPoints").text(data.RedScoreSummary.FoulPoints);
   $("#" + redSide + "FinalAutoBonusRankingPoint").html(
-    data.RedScoreSummary.AutoBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.RedScoreSummary.AutoRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $("#" + redSide + "FinalAutoBonusRankingPoint").attr(
-    "data-checked", data.RedScoreSummary.AutoBonusRankingPoint
+    "data-checked", data.RedScoreSummary.AutoRankingPoint
   );
   $("#" + redSide + "FinalCoralBonusRankingPoint").html(
-    data.RedScoreSummary.CoralBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.RedScoreSummary.CoralRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $("#" + redSide + "FinalCoralBonusRankingPoint").attr(
-    "data-checked", data.RedScoreSummary.CoralBonusRankingPoint
+    "data-checked", data.RedScoreSummary.CoralRankingPoint
   );
   $("#" + redSide + "FinalBargeBonusRankingPoint").html(
-    data.RedScoreSummary.BargeBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.RedScoreSummary.BargeRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $("#" + redSide + "FinalBargeBonusRankingPoint").attr(
-    "data-checked", data.RedScoreSummary.BargeBonusRankingPoint
+    "data-checked", data.RedScoreSummary.BargeRankingPoint
   );
   $("#" + redSide + "FinalRankingPoints").html(data.RedRankingPoints);
   $("#" + redSide + "FinalWins").text(data.RedWins);
@@ -205,22 +205,22 @@ const handleScorePosted = function(data) {
   $("#" + blueSide + "FinalBargePoints").text(data.BlueScoreSummary.EndgamePoints);
   $("#" + blueSide + "FinalFoulPoints").text(data.BlueScoreSummary.FoulPoints);
   $("#" + blueSide + "FinalAutoBonusRankingPoint").html(
-    data.BlueScoreSummary.AutoBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.BlueScoreSummary.AutoRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $("#" + blueSide + "FinalAutoBonusRankingPoint").attr(
-    "data-checked", data.BlueScoreSummary.AutoBonusRankingPoint
+    "data-checked", data.BlueScoreSummary.AutoRankingPoint
   );
   $("#" + blueSide + "FinalCoralBonusRankingPoint").html(
-    data.BlueScoreSummary.CoralBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.BlueScoreSummary.CoralRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $("#" + blueSide + "FinalCoralBonusRankingPoint").attr(
-    "data-checked", data.BlueScoreSummary.CoralBonusRankingPoint
+    "data-checked", data.BlueScoreSummary.CoralRankingPoint
   );
   $("#" + blueSide + "FinalBargeBonusRankingPoint").html(
-    data.BlueScoreSummary.BargeBonusRankingPoint ? "&#x2714;" : "&#x2718;"
+    data.BlueScoreSummary.BargeRankingPoint ? "&#x2714;" : "&#x2718;"
   );
   $("#" + blueSide + "FinalBargeBonusRankingPoint").attr(
-    "data-checked", data.BlueScoreSummary.BargeBonusRankingPoint
+    "data-checked", data.BlueScoreSummary.BargeRankingPoint
   );
   $("#" + blueSide + "FinalRankingPoints").html(data.BlueRankingPoints);
   $("#" + blueSide + "FinalWins").text(data.BlueWins);

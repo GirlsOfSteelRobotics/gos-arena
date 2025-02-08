@@ -7,12 +7,13 @@ package web
 
 import (
 	"fmt"
-	"github.com/Team254/cheesy-arena/game"
 	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/Team254/cheesy-arena/game"
 
 	"github.com/Team254/cheesy-arena/field"
 	"github.com/Team254/cheesy-arena/model"
@@ -64,12 +65,6 @@ func NewWeb(arena *field.Arena) *Web {
 		},
 		"toUpper": func(str string) string {
 			return strings.ToUpper(str)
-		},
-		"rowToInt": func(row game.Row) int {
-			return int(row)
-		},
-		"nodeStateToInt": func(nodeState game.NodeState) int {
-			return int(nodeState)
 		},
 
 		// MatchType enum values.

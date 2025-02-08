@@ -27,47 +27,69 @@
   <div class="well well-{{"{{alliance}}"}}">
     <fieldset>
       <legend>Autonomous</legend>
-      <b>Mobility</b>
+      <b>Leave</b>
       <div class="form-group">
         <div class="row">
           {{range $i := seq 3}}
             <div class="col-lg-2">
               <label class="col-lg-8 control-label">Team {{"{{team"}}{{$i}}{{"}}"}}</label>
-              <input type="checkbox" class="input-sm" name="{{"{{alliance}}"}}MobilityStatuses{{$i}}">
+              <input type="checkbox" class="input-sm" name="{{"{{alliance}}"}}LeaveStatuses{{$i}}">
             </div>
           {{end}}
         </div>
       </div>
-      <b>Charge Station Docking</b>
+      <b>Algae</b>
       <div class="form-group">
         <div class="row">
-          {{range $i := seq 3}}
-          <div class="col-lg-2">
-            <label class="col-lg-8 control-label">Team {{"{{team"}}{{$i}}{{"}}"}}</label>
-            <input type="checkbox" class="input-sm" name="{{"{{alliance}}"}}AutoDockStatuses{{$i}}">
-          </div>
-          {{end}}
+          <input type="int" name="{{"{{alliance}}"}}AlgaeProcessorAuto" value=""><label class="col-lg-2 control-label">Algae in Processor</label>
         </div>
         <div class="row">
-          <div class="col-lg-4 col-lg-offset-1">
-            <label class="col-lg-8 control-label">Charge Station Is Level?</label>
-            <input type="checkbox" class="input-sm" name="{{"{{alliance}}"}}AutoChargeStationLevel">
+          <input type="int" name="{{"{{alliance}}"}}AlgaeNetAuto" value=""><label class="col-lg-2 control-label">Algae in Net</label>
+        </div>
+      </div>
+      <b>Coral</b>
+      <div class="form-group">
+          <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}Level1Auto" value=""><label class="col-lg-2 control-label">Level 4</label>
+          </div>
+          <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}Level2Auto" value=""><label class="col-lg-2 control-label">Level 3</label>
+          </div>
+          <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}Level3Auto" value=""><label class="col-lg-2 control-label">Level 2</label>
+          </div>
+          <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}Level4Auto" value=""><label class="col-lg-2 control-label">Level 1</label>
+          </div>
+        </div>
+    </fieldset>
+    <fieldset>
+      <legend>Teleop</legend>
+      <b>Algae</b>
+      <div class="form-group">
+        <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}AlgaeProcessorTeleop" value=""><label class="col-lg-2 control-label">Algae in Processor</label>
+        </div>
+        <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}AlgaeNetTeleop" value=""><label class="col-lg-2 control-label">Algae in Net</label>
+        </div>
+      </div>
+      <b>Coral</b>
+      <div class="form-group">
+          <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}Level1Teleop" value=""><label class="col-lg-2 control-label">Level 4</label>
+          </div>
+          <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}Level2Teleop" value=""><label class="col-lg-2 control-label">Level 3</label>
+          </div>
+          <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}Level3Teleop" value=""><label class="col-lg-2 control-label">Level 2</label>
+          </div>
+          <div class="row">
+          <input type="int" name="{{"{{alliance}}"}}Level4Teleop" value=""><label class="col-lg-2 control-label">Level 1</label>
           </div>
         </div>
       </div>
-    </fieldset>
-    <fieldset>
-      <legend>Grid</legend>
-      <div class="row">
-        <div class="col-lg-1"></div>
-        {{range $i := seq 9}}
-        <label class="col-lg-1 control-label">{{$i}}</label>
-        {{end}}
-      </div>
-      <br />
-      {{template "gridRow" dict "row" 2 "rowName" "Top" "validNodeStates" .ValidNodeStates}}
-      {{template "gridRow" dict "row" 1 "rowName" "Middle" "validNodeStates" .ValidNodeStates}}
-      {{template "gridRow" dict "row" 0 "rowName" "Bottom" "validNodeStates" .ValidNodeStates}}
     </fieldset>
     <fieldset>
       <legend>Endgame</legend>
@@ -82,14 +104,13 @@
               <input type="radio" name="{{"{{alliance}}"}}EndgameStatuses{{$i}}" value="1">Parked
             </div>
             <div class="radio col-lg-1">
-              <input type="radio" name="{{"{{alliance}}"}}EndgameStatuses{{$i}}" value="2">Docked
+              <input type="radio" name="{{"{{alliance}}"}}EndgameStatuses{{$i}}" value="2">Shallow
+            </div>
+            <div class="radio col-lg-1">
+              <input type="radio" name="{{"{{alliance}}"}}EndgameStatuses{{$i}}" value="3">Deep
             </div>
           </div>
         {{end}}
-        <div class="col-lg-4 col-lg-offset-1">
-          <label class="col-lg-8 control-label">Charge Station Is Level?</label>
-          <input type="checkbox" class="input-sm" name="{{"{{alliance}}"}}EndgameChargeStationLevel">
-        </div>
       </div>
     </fieldset>
     <fieldset>
@@ -194,23 +215,4 @@
   renderResults("red");
   renderResults("blue");
 </script>
-{{end}}
-{{define "gridRow"}}
-  <div class="row">
-    <label class="col-lg-1">{{.rowName}}</label>
-    {{range $i := seq 9}}
-      {{template "gridNode" dict "row" $.row "column" (add $i -1) "validNodeStates" $.validNodeStates}}
-    {{end}}
-  </div>
-  <br />
-{{end}}
-{{define "gridNode"}}
-  <div class="col-lg-1">
-    <input type="checkbox" class="" name="{{"{{alliance}}"}}GridAutoScoringRow{{.row}}Node{{.column}}"> Auto?
-    <select name="{{"{{alliance}}"}}GridNodeStatesRow{{.row}}Node{{.column}}" style="width: 90px; font-size: 11px;">
-      {{range $i, $nodeState := index .validNodeStates .row .column}}
-        <option value="{{nodeStateToInt $i}}">{{$nodeState}}</option>
-      {{end}}
-    </select>
-  </div>
 {{end}}

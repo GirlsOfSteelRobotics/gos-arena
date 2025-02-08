@@ -34,18 +34,24 @@ const renderResults = function(alliance) {
   for (let i = 0; i < 3; i++) {
     const i1 = i + 1;
 
-    getInputElement(alliance, "MobilityStatuses" + i1).prop("checked", result.score.MobilityStatuses[i]);
-    getInputElement(alliance, "AutoDockStatuses" + i1).prop("checked", result.score.AutoDockStatuses[i]);
+    getInputElement(alliance, "LeaveStatuses" + i1).prop("checked", result.score.LeaveStatuses[i]);
     getInputElement(alliance, "EndgameStatuses" + i1, result.score.EndgameStatuses[i]).prop("checked", true);
-
-    for (let j = 0; j < 9; j++) {
-      getInputElement(alliance, `GridAutoScoringRow${i}Node${j}`).prop("checked", result.score.Grid.AutoScoring[i][j]);
-      getSelectElement(alliance, `GridNodeStatesRow${i}Node${j}`).val(result.score.Grid.Nodes[i][j]);
-    }
   }
 
-  getInputElement(alliance, "AutoChargeStationLevel").prop("checked", result.score.AutoChargeStationLevel);
-  getInputElement(alliance, "EndgameChargeStationLevel").prop("checked", result.score.EndgameChargeStationLevel);
+  getInputElement(alliance, "AlgaeProcessorAuto").prop("value", result.score.AlgaeCoral.AlgaeAutoProcessorCount);
+  getInputElement(alliance, "AlgaeNetAuto").prop("value", result.score.AlgaeCoral.AlgaeAutoNetCount);
+  getInputElement(alliance, "AlgaeProcessorTeleop").prop("value", result.score.AlgaeCoral.AlgaeTeleopProcessorCount);
+  getInputElement(alliance, "AlgaeNetTeleop").prop("value", result.score.AlgaeCoral.AlgaeTeleopNetCount);
+
+  getInputElement(alliance, "Level1Auto").prop("value", result.score.AlgaeCoral.CoralAutoCount[0]);
+  getInputElement(alliance, "Level2Auto").prop("value", result.score.AlgaeCoral.CoralAutoCount[1]);
+  getInputElement(alliance, "Level3Auto").prop("value", result.score.AlgaeCoral.CoralAutoCount[2]);
+  getInputElement(alliance, "Level4Auto").prop("value", result.score.AlgaeCoral.CoralAutoCount[3]);
+
+  getInputElement(alliance, "Level1Teleop").prop("value", result.score.AlgaeCoral.CoralTeleopCount[0]);
+  getInputElement(alliance, "Level2Teleop").prop("value", result.score.AlgaeCoral.CoralTeleopCount[1]);
+  getInputElement(alliance, "Level3Teleop").prop("value", result.score.AlgaeCoral.CoralTeleopCount[2]);
+  getInputElement(alliance, "Level4Teleop").prop("value", result.score.AlgaeCoral.CoralTeleopCount[3]);
 
   if (result.score.Fouls != null) {
     $.each(result.score.Fouls, function(k, v) {
@@ -70,27 +76,26 @@ const updateResults = function(alliance) {
     formData[v.name] = v.value;
   });
 
-  result.score.MobilityStatuses = [];
-  result.score.Grid = {AutoScoring: [], Nodes: []};
-  result.score.AutoDockStatuses = [];
+  result.score.LeaveStatuses = [];
   result.score.EndgameStatuses = [];
   for (let i = 0; i < 3; i++) {
     const i1 = i + 1;
 
-    result.score.MobilityStatuses[i] = formData[alliance + "MobilityStatuses" + i1] === "on";
-    result.score.AutoDockStatuses[i] = formData[alliance + "AutoDockStatuses" + i1] === "on";
+    result.score.LeaveStatuses[i] = formData[alliance + "LeaveStatuses" + i1] === "on";
     result.score.EndgameStatuses[i] = parseInt(formData[alliance + "EndgameStatuses" + i1]);
-
-    result.score.Grid.AutoScoring[i] = [];
-    result.score.Grid.Nodes[i] = [];
-    for (let j = 0; j < 9; j++) {
-      result.score.Grid.AutoScoring[i][j] = formData[alliance + `GridAutoScoringRow${i}Node${j}`] === "on";
-      result.score.Grid.Nodes[i][j] = parseInt(formData[alliance + `GridNodeStatesRow${i}Node${j}`]);
-    }
   }
 
-  result.score.AutoChargeStationLevel = formData[alliance + "AutoChargeStationLevel"] === "on";
-  result.score.EndgameChargeStationLevel = formData[alliance + "EndgameChargeStationLevel"] === "on";
+  result.score.AlgaeCoral.AlgaeAutoNetCount = parseInt(formData[alliance + "AlgaeNetAuto"]);
+  result.score.AlgaeCoral.AlgaeAutoProcessorCount = parseInt(formData[alliance + "AlgaeProcessorAuto"]);
+  result.score.AlgaeCoral.AlgaeTeleopNetCount = parseInt(formData[alliance + "AlgaeNetTeleop"]);
+  result.score.AlgaeCoral.AlgaeTeleopProcessorCount = parseInt(formData[alliance + "AlgaeProcessorTeleop"]);
+
+  for (let i = 0; i < 4; i++) {
+    const i1 = i + 1
+    result.score.AlgaeCoral.CoralAutoCount[i] = parseInt(formData[alliance + "Level"+i1+"Auto"])
+    result.score.AlgaeCoral.CoralTeleopCount[i] = parseInt(formData[alliance + "Level"+i1+"Teleop"])
+  }
+
 
   result.score.Fouls = [];
 

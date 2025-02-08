@@ -153,7 +153,6 @@ var endGameChargeStationMapping = map[game.EndgameStatus]string{
 	game.EndgameDeep:    "Deep",
 }
 var chargeStationLevelMapping = map[bool]string{false: "NotLevel", true: "Level"}
-var gridRowMapping = map[int]string{0: "Bottom", 1: "Mid", 2: "Top"}
 
 func NewTbaClient(eventCode, secretId, secret string) *TbaClient {
 	return &TbaClient{BaseUrl: tbaBaseUrl, eventCode: eventCode, secretId: secretId, secret: secret,

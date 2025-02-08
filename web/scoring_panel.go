@@ -40,10 +40,9 @@ func (web *Web) scoringPanelHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	data := struct {
 		*model.EventSettings
-		PlcIsEnabled        bool
-		Alliance            string
-		ValidGridNodeStates map[game.Row]map[int]map[game.NodeState]string
-	}{web.arena.EventSettings, web.arena.Plc.IsEnabled(), alliance, game.ValidGridNodeStates()}
+		PlcIsEnabled bool
+		Alliance     string
+	}{web.arena.EventSettings, web.arena.Plc.IsEnabled(), alliance}
 	err = template.ExecuteTemplate(w, "base_no_navbar", data)
 	if err != nil {
 		handleWebErr(w, err)
@@ -113,7 +112,6 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 				TeamPosition int
 				GridRow      int
 				GridNode     int
-				NodeState    game.NodeState
 			}{}
 			err = mapstructure.Decode(data, &args)
 			if err != nil {

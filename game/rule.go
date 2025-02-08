@@ -32,7 +32,7 @@ var rules = []*Rule{
 	{15, "G412", true, false, "Only throw CORAL if in your REEF ZONE. A ROBOT may not launch CORAL unless their BUMPERS are partially in their REEF ZONE."},
 	{16, "G414", false, false, "Keep your BUMPERS low. BUMPERS must be in the BUMPER ZONE (see R405)."},
 	{17, "G415", false, false, "Expansion limits. A ROBOT may not extend more than 1 ft. 6 in. (~45 cm) beyond the vertical projection of its ROBOT PERIMETER. "},
-	{18, "G415", false, false, "For strategic benefit: Expansion limits. A ROBOT may not extend more than 1 ft. 6 in. (~45 cm) beyond the vertical projection of its ROBOT PERIMETER. "},
+	{18, "G415", true, false, "For strategic benefit: Expansion limits. A ROBOT may not extend more than 1 ft. 6 in. (~45 cm) beyond the vertical projection of its ROBOT PERIMETER. "},
 	{19, "G417", true, false, "Watch your FIELD interaction. A ROBOT is prohibited from the following interactions with FIELD elements with the exception of CAGES"},
 	{20, "G418", true, true, "An Opponent’s CAGES are off-limits in TELEOP. In TELEOP, A ROBOT may not contact an opponent’s CAGE."},
 	{21, "G419", true, false, "ANCHORS are off-limits. A ROBOT may not contact the ANCHORS. Exceptions are granted for actions that are MOMENTARY and inconsequential."},
